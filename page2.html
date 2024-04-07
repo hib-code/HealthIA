@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scanner une image</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  max-width: 600px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+#fileInput {
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+canvas {
+  display: block;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#messageBar {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Scanner une image</h1>
+  <input type="file" id="fileInput" accept="image/*">
+  <button onclick="scanImage()">Scanner l'image</button>
+  <canvas id="canvas">Votre navigateur ne supporte pas HTML5 Canvas.</canvas>
+  <div id="messageBar">Entrez votre message</div>
+  
+
+<script>
+function scanImage() {
+  const fileInput = document.getElementById('fileInput');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const messageBar = document.getElementById('messageBar');
+
+  const file = fileInput.files[0];
+  if (!file) {
+    messageBar.innerText = 'Veuillez choisir une image.';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const img = new Image();
+    img.onload = function() {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 80, 100);
+      messageBar.innerText = 'Image scannée avec succès.';
+    }
+    img.src = event.target.result;
+  }
+  reader.readAsDataURL(file);
+}
+</script>
+</body>
+</html>
